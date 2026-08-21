@@ -1,111 +1,89 @@
-const contentLetterSrart_actived = "Chào Sơn, Hôm nay là sinh nhật bạn tui có món quà này cho bạn nè mở ra coi đi ♥" //Lời mở đầu cho bức thư
-const mainContentLetter = "Nhân ngày sinh nhật, tôi chúc bạn tuổi mới thật nhiều niềm vui hạnh phúc luôn đến bên bạn và gia đình và bạn luôn luôn xinh đẹp nhóa ♥ Happy BirthDay Sơn " //Nội dung của bức thư
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const intro=$("#intro"), exp=$("#experience"), openBtn=$("#openBtn");
+let audioOn=false, audioCtx=null, wishClicks=0;
 
-// Gắn 1 đường link ảnh bất kì
-let imgStart = document.querySelector(".myAI"); //Hình ảnh xuất hiện trong lời mở đầu của bức thư
-imgStart.src = "./img/cute-young-boy-kid-wearing-vest-and-hat-free-png.png";
+function sound(freq=520,dur=.08){
+ if(!audioOn)return;
+ audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
+ const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+ o.frequency.value=freq;o.type="sine";g.gain.setValueAtTime(.0001,audioCtx.currentTime);
+ g.gain.exponentialRampToValueAtTime(.06,audioCtx.currentTime+.01);
+ g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);
+ o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur);
+}
+$("#soundBtn").onclick=()=>{audioOn=!audioOn;$("#soundBtn").innerHTML=audioOn?"♫ <span>Âm thanh: Bật</span>":"♪ <span>Âm thanh: Tắt</span>";if(audioOn)sound(660,.12)};
 
-// Gắn 1 link ảnh bất kì
-let imgLetter = document.querySelector(".img");
-imgLetter.src = "./img/b4bbdb54b7152338d7143cb444a77f09.png"; //Hình ảnh xuất hiện trong nội dung của bức thư sau khi bức thư được viết ra hết
+openBtn.onclick=()=>{
+ sound(520,.12); intro.classList.add("done"); exp.classList.remove("hidden");
+ setTimeout(()=>{intro.style.display="none"; document.body.classList.add("started");},1000);
+ burst(55); toast("✨ Chào mừng đến với bữa tiệc của Sơn!");
+ setTimeout(()=>observeReveal(),250);
+};
 
-const splitContentLetterSrart_actived = contentLetterSrart_actived.split("");
+const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});
+function observeReveal(){$$(".reveal").forEach(x=>io.observe(x))}
+observeReveal();
 
-document.querySelector(".sticker").addEventListener("click", function () { //Hiệu ứng gõ chữ cho phần mở đầu của bức thư
-    document.querySelector(".contentLetter").innerHTML = "";
-    document.querySelector(".startLetter").classList.add("active")
-    setTimeout(() => {
-        splitContentLetterSrart_actived.forEach((val, index) => {
-            setTimeout(() => {
-                document.querySelector(".contentLetter").innerHTML += val;
-                if (index == contentLetterSrart_actived.length - 1) {
-                    setTimeout(() => {
-                        document.querySelector(".recieve").setAttribute("style", "opacity: 1; transition: .5s")
-                    }, 1000)
-                }
-            }, 50 * index)
-        })
-    }, 1000)
-})
+$("#wishBtn").onclick=()=>{
+ document.querySelector(".wish-section").scrollIntoView({behavior:"smooth"});
+ setTimeout(()=>$("#unlockWish").click(),700);
+};
+$("#unlockWish").onclick=()=>{
+ sound(720,.15); $("#wishCard").classList.add("open"); burst(28);
+ toast("💌 Mở được rồi — hãy đọc thật chậm nhé.");
+};
 
-document.querySelector("#mess").addEventListener("change", function () { //Hiệu ứng gõ chữ cho phần nội dung của bức thư
-    if (this.checked == true) {
-        document.querySelector(".content").classList.add("actived")
-        const splitMainContentLetter = mainContentLetter.split("");
+$$(".memory-card").forEach(card=>card.onclick=()=>{
+ sound(440,.08);
+ $("#modalImage").src=card.querySelector("img").src;
+ $("#modalCaption").textContent=card.dataset.caption;
+ $("#memoryModal").classList.add("show");
+ burst(12);
+});
+$("#modalClose").onclick=()=>$("#memoryModal").classList.remove("show");
+$(".modal-backdrop").onclick=()=>$("#memoryModal").classList.remove("show");
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#memoryModal").classList.remove("show")});
 
-        splitMainContentLetter.forEach((val, index) => {
-            setTimeout(() => {
-                document.querySelector(".mainContent").innerHTML += val;
-                if (index == mainContentLetter.length - 1) {
-                    document.querySelector(".img1").setAttribute("style", "opacity: 1; transition: .5s")
-                }
-            }, 50 * index)
-        })
+let cakeCount=0;
+$("#cake").onclick=()=>{
+ cakeCount++;sound(300+cakeCount*80,.08);
+ if(cakeCount>=5){$("#cake").classList.add("off");$("#cakeHint").textContent="Điều ước đã được gửi đi ✦";burst(90);toast("🌟 Ước nguyện đã bay lên!");}
+ else toast(["🕯️ Nhấn thêm một chút…","✨ Gần được rồi…","🎂 Thêm một lần nữa!","💫 Phép màu sắp xảy ra…"][cakeCount-1]);
+};
+$("#magicBtn").onclick=()=>{cakeCount=5;$("#cake").classList.add("off");$("#cakeHint").textContent="Điều ước đã được gửi đi ✦";sound(880,.25);burst(100);toast("🎉 BÙM! Chúc điều ước thành hiện thực!");};
 
-    } else {
-        document.querySelector(".content").classList.remove("actived")
-        document.querySelector(".img1").setAttribute("style", "opacity: 0; transition: .5s")
-        document.querySelector(".mainContent").innerHTML = "";
-        // document.querySelector(".designBox").style.display = "none";
-    }
-})
+$("#againBtn").onclick=()=>{
+ burst(160);sound(980,.3);toast("🎊 Sinh nhật vui vẻ! Nhấn nữa nếu bạn vẫn chưa bất ngờ.");
+ document.querySelector(".final-card").animate([{transform:"scale(1)"},{transform:"scale(1.025)"},{transform:"scale(1)"}],{duration:700});
+};
 
-document.querySelector(".recieve").addEventListener("click", () => {
-    document.querySelector(".startLetter").classList.add("close");
-    setTimeout(() => {
-        document.querySelector(".startForm").classList.add("close");
-        setTimeout(() => {
-            document.querySelector(".startForm").setAttribute("style", "bottom: 100%");
+function burst(n){
+ const layer=$("#confetti");
+ for(let i=0;i<n;i++){
+  const el=document.createElement("i");el.className="confetti";
+  el.style.setProperty("--x",Math.random()*100+"vw");
+  el.style.setProperty("--drift",(Math.random()*240-120)+"px");
+  el.style.setProperty("--t",(2.5+Math.random()*3)+"s");
+  el.style.setProperty("--h",Math.floor(Math.random()*360));
+  el.style.setProperty("--r",Math.random()*360+"deg");
+  el.style.width=(5+Math.random()*7)+"px";el.style.height=(8+Math.random()*12)+"px";
+  layer.appendChild(el);setTimeout(()=>el.remove(),6000);
+ }
+}
+function toast(text){
+ const t=$("#toast");t.textContent=text;t.classList.add("show");clearTimeout(window.toastTimer);
+ window.toastTimer=setTimeout(()=>t.classList.remove("show"),2400);
+}
 
-            let getTypeDevice = document.documentElement.clientWidth;
-            if (getTypeDevice <= 768) {
-                createLight(20)
-            } else {
-                createLight(40)
-            }
+const glow=$("#cursorGlow");
+window.addEventListener("pointermove",e=>{glow.style.left=e.clientX+"px";glow.style.top=e.clientY+"px"});
+window.addEventListener("click",()=>{wishClicks++; if(wishClicks===8)burst(45)});
 
-        }, 500)
-    }, 500)
-})
-
-// Animation Drop light _ Tạo hiệu ứng kim tuyến rơi
-//Bạn có thể thiết kế lại để trông chân thật hơn nhé, thiết kế của mình hơi bị cứng và thiếu sự tự nhiên
-const getBackground = document.querySelector(".backgroundParty");
-var width = getBackground.offsetWidth;
-var height = getBackground.offsetHeight;
-
-function createLight(a) {
-    var container = document.querySelector(".backgroundParty");
-    const blurLv = [2, 4];
-    const count = a;
-    const allDefaultColor = ["red", "lime", "yellow", "orange", "blue"]
-
-    for (var i = 0; i < count; i++) {
-        var randomLeft = 0;
-        randomLeft = Math.floor(Math.random() * width);
-        var randomTop = 0;
-        randomTop = Math.floor(Math.random() * height / 2);
-        var color = "white";
-        var blur = Math.floor(Math.random() * 2);
-        var widthEle = Math.floor(Math.random() * 5) + 15;
-        var moveTime = Math.floor(Math.random() * 4) + 4;
-
-        var div = document.createElement("div");
-        div.classList.add = "snow";
-        div.style.position = "absolute";
-        div.style.backgroundColor = allDefaultColor[Math.floor(Math.random() * 5)]
-        div.style.borderRadius = Math.floor(Math.random() * 10 + 10).toString() + "px"
-
-        div.style.height = "0px";
-        div.style.width = "0px";
-
-        div.style.height = widthEle * Math.floor(Math.random() * 4 + 1) + "px";
-        div.style.width = widthEle + "px";
-        div.style.marginLeft = randomLeft + "px"
-        div.style.marginTop = randomTop + "px"
-        div.style.filter = "blur(" + blurLv[blur] + "px" + ")"
-        div.style.animation = "moveLight " + moveTime + "s ease-in-out infinite";
-
-        container.appendChild(div);
-    }
+for(let i=0;i<18;i++){
+ const p=document.createElement("span");p.textContent=["✦","•","♡"][Math.floor(Math.random()*3)];
+ p.style.position="absolute";p.style.left=Math.random()*100+"%";p.style.top="-30px";
+ p.style.color=["#ff6fae","#ffd37a","#a978ff"][i%3];p.style.opacity=.2+Math.random()*.5;
+ p.style.fontSize=8+Math.random()*12+"px";
+ p.style.animation=`fall ${6+Math.random()*7}s linear ${Math.random()*5}s infinite`;
+ $("#petals").appendChild(p);
 }

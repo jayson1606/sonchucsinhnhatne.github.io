@@ -1,48 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="./main.css">
-  <title>Chúc Sinh Nhật Của Sơn Dành Cho Bạn Nè</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100d1c">
+<title>Chúc mừng sinh nhật Ngọc Anh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./main.css">
 </head>
-
 <body>
-  <div class="startForm">
-    <div class="startLetter">
-      <div class="contentLetter"></div>
-      <img class="myAI" src="" alt="">
-      <div class="sticker"></div>
-      <button class="recieve"><i class="fa-solid fa-gift"></i></button>
-    </div>
-  </div>
+<div class="noise"></div>
+<div id="cursorGlow"></div>
+<div class="stars" id="stars"></div>
+<div class="petals" id="petals"></div>
 
-  <div class="backgroundParty">
-    <img class="balloon1 balloon" src="./img/PNGkhothietke.net-02776.png" alt="">
-    <img class="balloon2 balloon" src="./img/PNGkhothietke.net-02776.png" alt="">
-    <img class="bannerParty" src="./img/makeupspa-kit-theme-happy-birthday-bunting-paper-banner-party-supply-261454.png"
-      alt="">
-    <div class="letterForm">
-      <input type="checkbox" id="mess">
-      <div class="content">
-        <div class="mainContent"></div>
-        <div class="img1"><img class="img" src="" alt=""></div>
+<section class="intro" id="intro">
+  <div class="intro-card">
+    <div class="seal">✦</div>
+    <span class="eyebrow">Một món quà nhỏ dành cho em</span>
+    <h1>Hello <em> Ngọc Anh</em></h1>
+    <p class="intro-copy">Có một món quà nhỏ đang chờ được mở. Nhưng… Na phải tự tay khám phá từng lớp nhé.</p>
+    <button class="primary-btn" id="openBtn"><span>Mở món quà</span><b>→</b></button>
+    <div class="tap-hint">nhấn để bắt đầu <span>•</span> kéo xuống để khám phá</div>
+  </div>
+</section>
+
+<main id="experience" class="hidden">
+  <header class="topbar">
+    <div class="brand">Ngoc Anh<span>✦</span>Birthday<span>✦</span>30/09/2006</div>
+    <button class="sound-btn" id="soundBtn" aria-label="Bật tắt âm thanh">♪ <span>Âm thanh</span></button>
+  </header>
+
+  <section class="hero section">
+    <div class="hero-copy reveal">
+      <span class="eyebrow">HAPPY BIRTHDAY</span>
+      <h2>Chúc mừng<br><em>Sinh Nhật Ngọc Anh</em> ✨</h2>
+      <p>Thêm một tuổi mới, thêm một chương mới. Mong những điều đẹp nhất tìm đến với em theo cách bất ngờ nhất.</p>
+      <button class="ghost-btn" id="wishBtn">Nhấn để nhận lời chúc <span>✦</span></button>
+    </div>
+    <div class="hero-art reveal">
+      <div class="orb"></div>
+      <div class="photo-frame tilt">
+        <img src="./img/na1.jpg" alt="Kỷ niệm">
       </div>
-      <label class="designBox" for="mess">
-        <p class="press">Nhấn</p>
-      </label>
+      <img class="hero-character" src="./img/cute-young-boy-kid-wearing-vest-and-hat-free-png.png" alt="">
+      <div class="floating-note note-one">🎂</div>
+      <div class="floating-note note-two">♡</div>
+      <div class="floating-note note-three">✦</div>
     </div>
+    <div class="scroll-cue">Kéo <span>↓</span></div>
+  </section>
+
+  <section class="wish-section section">
+    <div class="section-head reveal">
+      <span class="eyebrow">01 / THE FIRST SURPRISE</span>
+      <h3>Một lời chúc,<br><em>dành cho em.</em></h3>
+    </div>
+    <div class="wish-card reveal" id="wishCard">
+      <div class="wish-lock" id="wishLock">
+        <div class="lock-icon">✦</div>
+        <h4>Có một điều muốn nói…</h4>
+        <p>Nhấn vào chiếc hộp để mở bí mật.</p>
+        <button class="round-btn" id="unlockWish">+</button>
+      </div>
+      <div class="wish-message" id="wishMessage">
+        <span class="big-quote">“</span>
+        <p>Tuổi mới thật rực rỡ nhé. Mong Ngọc Anh luôn có đủ can đảm để theo đuổi điều mình thích, đủ bình yên để tận hưởng những điều đang có, và đủ may mắn để mỗi ngày đều có một lý do để mỉm cười.</p>
+        <strong>— Một lời chúc từ anh Master Barista ♥</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="memory-section section">
+    <div class="section-head reveal">
+      <span class="eyebrow">02 / LITTLE MEMORIES</span>
+      <h3>Nhìn lại<br><em>những kỷ niệm nhỏ</em></h3>
+      <p class="muted">Nhấn vào từng tấm ảnh. Mỗi lần mở là một bất ngờ nhỏ.</p>
+    </div>
+    <div class="gallery">
+      <button class="memory-card card-a reveal" data-caption="Có những khoảnh khắc chẳng cần hoàn hảo, chỉ cần thật vui.">
+        <img src="./img/memory-1.jpg" alt="Kỷ niệm 01"><span>MEMORY 01</span>
+      </button>
+      <button class="memory-card card-b- reveal" data-caption="Một ngày bình thường cũng có thể trở thành kỷ niệm đẹp.">
+        <img src="./img/anh-cung-2.jpg" alt="Kỷ niệm 02"><span>MEMORY 02</span>
+      </button>
+      <button class="memory-card reveal" data-caption="Và đây là lời nhắc: hôm nay hãy cười thật nhiều nhé.">
+        <img src="./img/anh-cung-3.jpg" alt="Kỷ niệm 03"><span>MEMORY 03</span>
+      </button>
+      <button class="memory-card card-d reveal" data-caption="Một chút màu sắc, một chút lấp lánh, vừa đủ cho chúng ta.">
+        <img src="./img/anh-cung-1.jpg" alt="Kỷ niệm 04"><span>MEMORY 04</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="cake-section section">
+    <div class="cake-wrap reveal">
+      <span class="eyebrow">03 / MAKE A WISH</span>
+      <h3>Nhấn vào bánh,<br><em>ước một điều đi.</em></h3>
+      <div class="cake" id="cake">
+        <div class="flame"></div><div class="candle"></div>
+        <div class="icing"></div><div class="cake-body"></div>
+        <div class="plate"></div>
+      </div>
+      <p class="muted" id="cakeHint">Bạn có 1 lần thổi nến… hoặc nhấn thật nhiều để tạo phép màu.</p>
+      <button class="primary-btn small" id="magicBtn">Tạo phép màu ✦</button>
+    </div>
+  </section>
+
+  <section class="final-section section">
+    <div class="final-card reveal">
+      <img src="./img/anh-cung-1.jpg" class="final-banner" alt="Ngọc Anh">
+      <div class="final-content">
+        <span class="eyebrow">THE LAST SURPRISE</span>
+        <h3>Happy Birthday,<br><em>Ngọc Anh</em></h3>
+        <p>Chúc cho chương mới này có thật nhiều chuyến đi, những người tuyệt vời, những đêm cười không ngớt và những điều khiến em tự hào khi nhìn lại.</p>
+        <div class="signature">By anh Master Barista <span>♥</span></div>
+        <button class="outline-btn" id="againBtn">Nhấn thêm một lần nữa ✦</button>
+      </div>
+    </div>
+  </section>
+  <footer>30/09/2006 ✦ Ngọc Anh</footer>
+</main>
+
+<div class="memory-modal" id="memoryModal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">×</button>
+    <img id="modalImage" src="" alt="">
+    <div><span class="eyebrow">A LITTLE MEMORY</span><p id="modalCaption"></p></div>
   </div>
-
-  <script src="./index.js"></script>
+</div>
+<div class="toast" id="toast">✨ Điều bất ngờ đang đến...</div>
+<div class="confetti-layer" id="confetti"></div>
+<script src="./index.js"></script>
 </body>
-
 </html>
